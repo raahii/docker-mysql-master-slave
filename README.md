@@ -2,11 +2,15 @@
 
 Simple MySQL master-slave replication with docker-compose for development.
 
-## Configuration
+
+
+## Setting
+
+- MySQL 8.0
 
 - 1 master, 1 slave
 
--  mysql user (both master and slave)
+- mysql user (both master and slave)
 
   - user: `root`
   - password: `password`
@@ -17,8 +21,15 @@ Simple MySQL master-slave replication with docker-compose for development.
 
 ## Run
 
-```
+```shell
 docker-compose up -d
+```
+
+```
+    Name                 Command             State                 Ports
+--------------------------------------------------------------------------------------
+mysql-master   docker-entrypoint.sh mysqld   Up      0.0.0.0:3306->3306/tcp, 33060/tcp
+mysql-slave    docker-entrypoint.sh mysqld   Up      0.0.0.0:3307->3306/tcp, 33060/tcp
 ```
 
 
@@ -27,13 +38,15 @@ docker-compose up -d
 
 - Make changes to master
 
-```
+```shell
 docker exec mysql-master sh -c "export MYSQL_PWD=password; mysql -u root app -e 'create table code(code int); insert into code values (100), (200)'"  
 ```
 
+
+
 - Read changes from slave
 
-```
+```shell
 docker exec mysql-slave sh -c "export MYSQL_PWD=password; mysql -u root app -e 'select * from code \G'"  
 ```
 
