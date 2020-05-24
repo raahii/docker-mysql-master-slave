@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  mysql-master:
+    image: mysql:8.0
+    container_name: mysql-master
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app
+    volumes:
+      - ./master/my.cnf:/etc/mysql/my.cnf
+      - ./master/data:/var/lib/mysql
+      - ./master/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+
+  mysql-slave:
+    image: mysql:8.0
+    container_name: mysql-slave
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app
+    volumes:
+      - ./slave/my.cnf:/etc/mysql/my.cnf
+      - ./slave/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3307:3306
+    depends_on:
+      - mysql-master
