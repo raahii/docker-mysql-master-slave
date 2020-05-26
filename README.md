@@ -8,6 +8,8 @@ Simple MySQL master-slave replication with docker-compose for development.
 
 - MySQL 8.0
 
+- GTID replicatoin
+
 - 1 master, 1 slave
 
 - mysql user (both master and slave)
